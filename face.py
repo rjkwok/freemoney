@@ -52,25 +52,34 @@ def getShape(landmarks):
 # Shape: "square", "triangular", "round"
 #
 
-#cap = cv2.VideoCapture(0)
-prediction_service = build('prediction', 'v1.6', developerKey=DEV_KEY)
+from oauth2client.client import OAuth2WebServerFlow
 
-#ret, frame = cap.read()
+flow = OAuth2WebServerFlow(client_id='326647037000-m27qe32ggi9iuqlkjf1b5lcictuc37v3.apps.googleusercontent.com',
+                           client_secret='QkZAetj9gTieCBUfsZZBeJP0',
+                           scope=('https://www.googleapis.com/auth/prediction', 'https://www.googleapis.com/auth/devstorage.read_only'),
+                           redirect_uri='http://example.com/auth_return')
 
-frame = cv2.imread(IMAGE_PATH, 0)
-#frame = None
+credentials = flow.step2_exchange(flow.step1_get_authorize_url())
+
+cap = cv2.VideoCapture(0)
+prediction_service = build('prediction', 'v1.6', developerKey=DEV_KEY, credentials=credentials)
+
+frame = None
 while(True):
 
     # Capture frame-by-frame
-#    ret, frame = cap.read()
+    ret, frame = cap.read()
 
     # Display the resulting frame
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) & 0xFF == ord(" "):
         break
 
-#cv2.imwrite(IMAGE_PATH, frame)
-prediction_service.hostedmodels()
+cv2.imwrite(IMAGE_PATH, frame)
+
+model = prediction_service.trainedmodels
+
+print(model.insert(project="hackthenorth16-1717", body={"storageDataLocation": "face_data_20160917/eye_data.csv", "modelType": "classification", "id": "eyes"}).execute())
 
 facepp_api = facepp.API(API_KEY, API_SECRET, srv=API_SERVER)
 
