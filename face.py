@@ -15,7 +15,7 @@ API_SERVER = 'http://api.us.faceplusplus.com/'
 DEV_KEY = 'AIzaSyCy4FtXwyNm6fx6j84AUI_GM9ZYrcrEGYk '
 
 # Source image
-IMAGE_PATH = "C:/Users/Richard/Desktop/me.jpg"
+IMAGE_PATH = "C:\Users\Kristy Xue Gao\Downloads\obama.jpg"
 
 def getEyes(landmarks):
 
@@ -52,12 +52,14 @@ landmark = facepp_api.detection.landmark(face_id=face['face'][0]['face_id'], typ
 
 window = pyglet.window.Window()
 
-vertex_list = pyglet.graphics.vertex_list(len(getEyes(landmark["result"][0]["landmark"])), ('v2f', [value for point in getEyes(landmark["result"][0]["landmark"]) for value in point]))
+vertex_list_eyes = pyglet.graphics.vertex_list(len(getEyes(landmark["result"][0]["landmark"])), ('v2f', [value for point in getEyes(landmark["result"][0]["landmark"]) for value in point]))
+vertex_list_nose = pyglet.graphics.vertex_list(len(getNose(landmark["result"][0]["landmark"])), ('v2f', [value for point in getNose(landmark["result"][0]["landmark"]) for value in point]))
 
 @window.event
 def on_draw():
     window.clear()
-    vertex_list.draw(pyglet.gl.GL_POINTS)
+    vertex_list_eyes.draw(pyglet.gl.GL_POINTS)
+    vertex_list_nose.draw(pyglet.gl.GL_POINTS)
 
 pyglet.app.run()
 
