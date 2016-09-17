@@ -1,4 +1,6 @@
 import re
+import time
+import random
 
 import pyglet
 import facepp
@@ -64,6 +66,7 @@ while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()
 
+    #frame = cv2.imread(IMAGE_PATH, 0)
     # Display the resulting frame
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) & 0xFF == ord(" "):
@@ -73,23 +76,32 @@ cv2.imwrite(IMAGE_PATH, frame)
 
 model = prediction_service.trainedmodels()
 
-print(model.insert(project="326647037000", body={"storageDataLocation": "face_data_20160917/eye_data.csv", "modelType": "classification", "id": "eyes"}).execute())
-
 facepp_api = facepp.API(API_KEY, API_SECRET, srv=API_SERVER)
 
 face = facepp_api.detection.detect(img=facepp.File(IMAGE_PATH))
 landmark = facepp_api.detection.landmark(face_id=face['face'][0]['face_id'], type='83p')
 
-window = pyglet.window.Window()
+colormark = facepp_api.detection.landmark(face_id=face['face'][0]['face_id'])
 
-vertex_list = pyglet.graphics.vertex_list(len(getShape(landmark["result"][0]["landmark"])), ('v2f', [value for point in getShape(landmark["result"][0]["landmark"]) for value in point]))
+image = pyglet.image.load(IMAGE_PATH)
 
-@window.event
-def on_draw():
-    window.clear()
-    vertex_list.draw(pyglet.gl.GL_POINTS)
+random.seed()
 
-pyglet.app.run()
+rgb_vals = []
 
+radius = 20
+for i in range(100):
+	rgb = image.get_region(int(colormark['result'][0]['landmark']['nose_tip']['x'] + random.uniform(-1.0, 1.0)*radius), int(colormark['result'][0]['landmark']['nose_tip']['y'] + random.uniform(-1.0, 1.0)*radius), 1, 1).get_image_data().get_data("RGB", 3)
+	rgb_vals.append((ord(rgb[0]), ord(rgb[1]), ord(rgb[2]))) 
+
+skinTone = (sum([v[0] for v in rgb_vals]) / float(len(rgb_vals)), sum([v[1] for v in rgb_vals]) / float(len(rgb_vals)), sum([v[2] for v in rgb_vals]) / float(len(rgb_vals)))
+print(skinTone)
+
+print(model.predict(project="326647037000", id="eyes", body={ "input": { "csvInstance": [value for point in getEyes(landmark["result"][0]["landmark"]) for value in point] } } ).execute()["outputLabel"])
+print(model.predict(project="326647037000", id="mouth", body={ "input": { "csvInstance": [value for point in getMouth(landmark["result"][0]["landmark"]) for value in point] } } ).execute()["outputLabel"])
+print(model.predict(project="326647037000", id="eyebrow", body={ "input": { "csvInstance": [value for point in getEyebrows(landmark["result"][0]["landmark"]) for value in point] } } ).execute()["outputLabel"])
+print(model.predict(project="326647037000", id="nose", body={ "input": { "csvInstance": [value for point in getNose(landmark["result"][0]["landmark"]) for value in point] } } ).execute()["outputLabel"])
+print(model.predict(project="326647037000", id="shape", body={ "input": { "csvInstance": [value for point in getShape(landmark["result"][0]["landmark"]) for value in point] } } ).execute()["outputLabel"])
 
 cv2.destroyAllWindows()
+ 
