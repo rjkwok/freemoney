@@ -18,7 +18,7 @@ API_SERVER = 'http://api.us.faceplusplus.com/'
 DEV_KEY = 'AIzaSyCy4FtXwyNm6fx6j84AUI_GM9ZYrcrEGYk '
 
 # Source image
-IMAGE_PATH = "C:\Users\Kristy Xue Gao\Downloads\obama.jpg"
+IMAGE_PATH = "C:/Users/Richard/Desktop/me.jpg"
 
 def getEyes(landmarks):
 
@@ -52,14 +52,8 @@ def getShape(landmarks):
 # Shape: "square", "triangular", "round"
 #
 
-from oauth2client.client import OAuth2WebServerFlow
-
-flow = OAuth2WebServerFlow(client_id='326647037000-m27qe32ggi9iuqlkjf1b5lcictuc37v3.apps.googleusercontent.com',
-                           client_secret='QkZAetj9gTieCBUfsZZBeJP0',
-                           scope=('https://www.googleapis.com/auth/prediction', 'https://www.googleapis.com/auth/devstorage.read_only'),
-                           redirect_uri='http://example.com/auth_return')
-
-credentials = flow.step2_exchange(flow.step1_get_authorize_url())
+from oauth2client.client import GoogleCredentials
+credentials = GoogleCredentials.get_application_default()
 
 cap = cv2.VideoCapture(0)
 prediction_service = build('prediction', 'v1.6', developerKey=DEV_KEY, credentials=credentials)
@@ -77,9 +71,9 @@ while(True):
 
 cv2.imwrite(IMAGE_PATH, frame)
 
-model = prediction_service.trainedmodels
+model = prediction_service.trainedmodels()
 
-print(model.insert(project="hackthenorth16-1717", body={"storageDataLocation": "face_data_20160917/eye_data.csv", "modelType": "classification", "id": "eyes"}).execute())
+print(model.insert(project="326647037000", body={"storageDataLocation": "face_data_20160917/eye_data.csv", "modelType": "classification", "id": "eyes"}).execute())
 
 facepp_api = facepp.API(API_KEY, API_SECRET, srv=API_SERVER)
 
@@ -88,18 +82,12 @@ landmark = facepp_api.detection.landmark(face_id=face['face'][0]['face_id'], typ
 
 window = pyglet.window.Window()
 
-<<<<<<< HEAD
-vertex_list_eyes = pyglet.graphics.vertex_list(len(getEyes(landmark["result"][0]["landmark"])), ('v2f', [value for point in getEyes(landmark["result"][0]["landmark"]) for value in point]))
-vertex_list_nose = pyglet.graphics.vertex_list(len(getNose(landmark["result"][0]["landmark"])), ('v2f', [value for point in getNose(landmark["result"][0]["landmark"]) for value in point]))
-=======
 vertex_list = pyglet.graphics.vertex_list(len(getShape(landmark["result"][0]["landmark"])), ('v2f', [value for point in getShape(landmark["result"][0]["landmark"]) for value in point]))
->>>>>>> origin/master
 
 @window.event
 def on_draw():
     window.clear()
-    vertex_list_eyes.draw(pyglet.gl.GL_POINTS)
-    vertex_list_nose.draw(pyglet.gl.GL_POINTS)
+    vertex_list.draw(pyglet.gl.GL_POINTS)
 
 pyglet.app.run()
 
