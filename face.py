@@ -52,8 +52,12 @@ landmark = facepp_api.detection.landmark(face_id=face['face'][0]['face_id'], typ
 
 window = pyglet.window.Window()
 
+<<<<<<< HEAD
 vertex_list_eyes = pyglet.graphics.vertex_list(len(getEyes(landmark["result"][0]["landmark"])), ('v2f', [value for point in getEyes(landmark["result"][0]["landmark"]) for value in point]))
 vertex_list_nose = pyglet.graphics.vertex_list(len(getNose(landmark["result"][0]["landmark"])), ('v2f', [value for point in getNose(landmark["result"][0]["landmark"]) for value in point]))
+=======
+vertex_list = pyglet.graphics.vertex_list(len(getShape(landmark["result"][0]["landmark"])), ('v2f', [value for point in getShape(landmark["result"][0]["landmark"]) for value in point]))
+>>>>>>> origin/master
 
 @window.event
 def on_draw():
