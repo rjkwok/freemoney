@@ -6,6 +6,9 @@ import apiclient
 import oauth2client
 from googleapiclient.discovery import build
 
+import numpy as np
+import cv2
+
 # face++
 API_KEY = 'bb018c46f20c7733a9d6020f73f3725d'
 API_SECRET = 'Ha0YQ-QDt8d3h5kOjxRLalxwVWpB9T23'
@@ -41,8 +44,32 @@ def getShape(landmarks):
 # Main execution
 #############################################################
 
+#
+# Brows: "thick", "medium", "thin"
+# Eyes: "hood", "no crease", "slanted"
+# Nose: "in", "out"
+# Mouth: "smile", "neutral", "frown"
+# Shape: "square", "triangular", "round"
+#
+
+#cap = cv2.VideoCapture(0)
 prediction_service = build('prediction', 'v1.6', developerKey=DEV_KEY)
 
+#ret, frame = cap.read()
+
+frame = cv2.imread(IMAGE_PATH, 0)
+#frame = None
+while(True):
+
+    # Capture frame-by-frame
+#    ret, frame = cap.read()
+
+    # Display the resulting frame
+    cv2.imshow('frame', frame)
+    if cv2.waitKey(1) & 0xFF == ord(" "):
+        break
+
+#cv2.imwrite(IMAGE_PATH, frame)
 prediction_service.hostedmodels()
 
 facepp_api = facepp.API(API_KEY, API_SECRET, srv=API_SERVER)
@@ -61,3 +88,5 @@ def on_draw():
 
 pyglet.app.run()
 
+
+cv2.destroyAllWindows()
