@@ -14,12 +14,12 @@ import cv2
 from oauth2client.client import GoogleCredentials
 
 # face++
-API_KEY = 'bb018c46f20c7733a9d6020f73f3725d'
-API_SECRET = 'Ha0YQ-QDt8d3h5kOjxRLalxwVWpB9T23'
+API_KEY = {YOUR_API_KEY_HERE}
+API_SECRET = {YOUR_API_SECRET_KEY_HERE}
 API_SERVER = 'http://api.us.faceplusplus.com/'
 
 # Google Cloud Services
-DEV_KEY = 'AIzaSyCy4FtXwyNm6fx6j84AUI_GM9ZYrcrEGYk '
+DEV_KEY = {YOUR_DEVELOPER_KEY_HERE}
 
 # Source image
 IMAGE_PATH = "source.jpg"
