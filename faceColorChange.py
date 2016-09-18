@@ -1,10 +1,15 @@
 import re
+import time
+import random
 
 import pyglet
 import facepp
 import apiclient
 import oauth2client
 from googleapiclient.discovery import build
+
+import numpy as np
+import cv2
 
 # face++
 API_KEY = 'bb018c46f20c7733a9d6020f73f3725d'
@@ -80,68 +85,68 @@ haircfp = ""
 
 #eye file path
 if eye == "hood":
-	eyefp = "/Users/2943644/Desktop/Components2/eyes/hood.png"
+	eyefp = "Components2/eyes/hood.png"
 elif eye == "no crease":
-	eyefp = "/Users/2943644/Desktop/Components2/eyes/o\ crease.png"
+	eyefp = "Components2/eyes/o\ crease.png"
 else:
-	eyefp = "/Users/2943644/Desktop/Components2/eyes/slanted.png"
+	eyefp = "Components2/eyes/slanted.png"
 #eyebrow file path
 if eyeb == "thick":
-	eyebfp = "/Users/2943644/Desktop/Components2/eyebrows/othick.png"
+	eyebfp = "Components2/eyebrows/othick.png"
 elif eyeb == "thin":
-	eyebfp = "/Users/2943644/Desktop/Components2/eyebrows/othin.png"
+	eyebfp = "Components2/eyebrows/othin.png"
 else:
-	eyebfp = "/Users/2943644/Desktop/Components2/eyebrows/eyebrows/medium.png"
+	eyebfp = "Components2/eyebrows/eyebrows/medium.png"
 #nose file path
 if nose == "in":
-	nosefp = "/Users/2943644/Desktop/Components2/onose/in.png"
+	nosefp = "Components2/onose/in.png"
 else:
-	nosefp = "/Users/2943644/Desktop/Components2/onose/on.png"
+	nosefp = "Components2/onose/on.png"
 #mouth file path
 if mouth == "smile":
-	mouthfp = "/Users/2943644/Desktop/Components2/mouth/smile.png"
+	mouthfp = "Components2/mouth/smile.png"
 elif mouth == "neutral":
-	mouthfp = "/Users/2943644/Desktop/Components2/mouth/oneutral.png"
+	mouthfp = "Components2/mouth/oneutral.png"
 else:
-	mouthfp = "/Users/2943644/Desktop/Components2/mouth/ofrown.png"
+	mouthfp = "Components2/mouth/ofrown.png"
 
 #face file path
 if face == "round":
-	facefp = "/Users/2943644/Desktop/Components2/oface/oround.png"
+	facefp = "Components2/oface/oround.png"
 elif face == "triangular":
-	facefp = "/Users/2943644/Desktop/Components2/oface/otriangular.png"
+	facefp = "Components2/oface/otriangular.png"
 else:
-	facefp = "/Users/2943644/Desktop/Components2/oface/square.png"
+	facefp = "Components2/oface/square.png"
 
 
 #facec file path
 if facec == "roundc":
-	facecfp = "/Users/2943644/Desktop/Components2/ofacec/oroundc.png"
+	facecfp = "Components2/ofacec/oroundc.png"
 elif facec == "triangularc":
-	facecfp = "/Users/2943644/Desktop/Components2/ofacec/otriangularc.png"
+	facecfp = "Components2/ofacec/otriangularc.png"
 else:
-	facecfp = "/Users/2943644/Desktop/Components2/ofacec/squarec.png"
+	facecfp = "Components2/ofacec/squarec.png"
 
 #hair file path
 if hair == "m1":
-	hairfp = "/Users/2943644/Desktop/Components2/hair/m1.png"
+	hairfp = "Components2/hair/m1.png"
 elif hair == "m2":
-	hairfp = "/Users/2943644/Desktop/Components2/hair/m2.png"
+	hairfp = "Components2/hair/m2.png"
 
 elif hair == "f1":
-	hairfp = "/Users/2943644/Desktop/Components2/hair/f1.png"
+	hairfp = "Components2/hair/f1.png"
 else:
-	hairfp = "/Users/2943644/Desktop/Components2/hair/m1.png"
+	hairfp = "Components2/hair/m1.png"
 
 #hairc file path
 if hairc == "m1c":
-	haircfp ="/Users/2943644/Desktop/Components2/hairc/m1c.png"
+	haircfp ="Components2/hairc/m1c.png"
 elif hairc == "m2c":
-	haircfp = "/Users/2943644/Desktop/Components2/hairc/m2c.png"
+	haircfp = "Components2/hairc/m2c.png"
 elif hairc == "f1c":
-	haircfp = "/Users/2943644/Desktop/Components2/hairc/f1c.png"
+	haircfp = "Components2/hairc/f1c.png"
 else:
-	haircfp = "/Users/2943644/Desktop/Components2/hairc/f2c.png"
+	haircfp = "Components2/hairc/f2c.png"
 
 
 
@@ -156,8 +161,7 @@ iface = pyglet.image.load(facefp)
 ifacec = pyglet.image.load(facecfp)
 ihair = pyglet.image.load(hairfp)
 ihairc = pyglet.image.load(haircfp)
-#back = pyglet.image.load("/Users/2943644/Desktop/Components/oback.png")
-back = pyglet.image.load("/Users/2943644/Desktop/white-background-300x246.png")
+back = pyglet.image.SolidColorImagePattern((255, 255, 255, 255))
 
 
 ieyesprite = pyglet.sprite.Sprite(ieye, x=50, y=50)
