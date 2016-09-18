@@ -1,4 +1,4 @@
-#Tentative Name
+#Banterface
 An application that recognizes facial characteristics and generates an RPG-styled sprite!
 ###How __ works
 ____ First uses Face++ to anaylze facial features from a picture. The application, trainned with machine learning from Google Cloud Platform, will generate the appropriate sprite.
