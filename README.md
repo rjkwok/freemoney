@@ -12,3 +12,5 @@ We did not have enough time to implement a GUI.
 We're very pleased that we have a functioning project that involves machine learning and facial recognition - two complex topics. 
 ## What we learned
 We are all happy to experience machine learning and implementing it. Implementing Face++ and working with it is also new to us. In addition, most of us did not have experience with pyglet prior to this hack.
+## Sample Portrait
+[Absolute README link](http://challengepost-s3-challengepost.netdna-ssl.com/photos/production/software_photos/000/411/154/datas/gallery.jpg)
